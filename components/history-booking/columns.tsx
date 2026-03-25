@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import Image from "next/image"
+import CloudinaryImage from "@/components/CloudinaryImage"
 import { MoreHorizontal, ArrowUpDown, Copy, Eye } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -66,8 +66,8 @@ export const columns: ColumnDef<Booking>[] = [
       return (
         <div className="flex items-center gap-4">
           <div className="relative lg:w-50 lg:h-34 xl:w-64 xl:h-40 rounded-md overflow-hidden">
-            <Image
-              src="/room/deluxe-room/Deluxe_2-2000.jpg"
+            <CloudinaryImage
+              localSrc="/room/deluxe-room/Deluxe_2-2000.jpg"
               alt={booking.roomName}
               fill
               className="rounded-md object-cover"
@@ -209,10 +209,10 @@ const BookingDetailsDialogContent = ({ booking }: { booking: Booking }) => {
 
       <div className="mt-4 space-y-4">
         <div className="relative w-full h-65 rounded-lg overflow-hidden bg-slate-100">
-          <Image
-            src={booking.images?.[0] || roomTypeInBrief?.[0]?.imgUrl?.[0] as string} 
+          <CloudinaryImage
+            localSrc={booking.images?.[0] || roomTypeInBrief?.[0]?.imgUrl?.[0] as string}
             alt={booking.roomName}
-            fill 
+            fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
           />

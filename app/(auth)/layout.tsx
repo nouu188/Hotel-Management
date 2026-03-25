@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import Image from 'next/image'
+import CloudinaryImage from '@/components/CloudinaryImage'
 import { usePathname } from 'next/navigation'
 import SocialAuthForm from '@/components/form/SocialAuthForm'
 
@@ -13,8 +13,8 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className={`flex justify-center items-center min-h-screen bg-no-repeat`}>
-        <Image
-          src="/images/5.jpg"
+        <CloudinaryImage
+          localSrc="/images/5.jpg"
           fill
           className='absolute object-cover w-full'
           alt='layout auth'

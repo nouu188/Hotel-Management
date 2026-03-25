@@ -2,7 +2,7 @@
 
 import ImagesCarousel from '@/components/ImagesAutoCarousel'
 import { CircleUserRound, Gem, MapPin } from 'lucide-react'
-import Image from 'next/image'
+import CloudinaryImage from '@/components/CloudinaryImage'
 import Link from 'next/link'
 
 import React, { useState } from 'react'
@@ -54,15 +54,15 @@ const HomePage = () => {
                           url='https://www.youtube.com/watch?v=2Om2HXPk9Q4&t=11s'
                           light={
                               <div className='relative w-full h-full group cursor-pointer'> 
-                                  <Image
-                                      src="/images/1.jpg"
+                                  <CloudinaryImage
+                                      localSrc="/images/1.jpg"
                                       alt="Thumbnail video giới thiệu khách sạn La Siesta Premium Saigon"
-                                      fill 
-                                      style={{ objectFit: 'cover' }} 
+                                      fill
+                                      style={{ objectFit: 'cover' }}
                                       className='transform group-hover:scale-105 transition-transform duration-300 ease-in-out'
                                       placeholder="blur"
-                                      blurDataURL="/images/1.jpg" 
-                                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 896px, 896px" 
+                                      blurDataURL="/images/1.jpg"
+                                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 896px, 896px"
                                   />
                               </div>
                           }
@@ -90,7 +90,7 @@ const HomePage = () => {
 
               <div className='flex flex-col justify-center text-center'>
                 <Link className='hover:text-[#BF882E] transition-colors duration-300 cursor-pointer' href="https://www.tripadvisor.com/Hotel_Review-g293925-d25442757-Reviews-La_Siesta_Premium_Saigon-Ho_Chi_Minh_City.html">TripAdvisor Traveler Rating</Link>
-                <Image src="/images/tripAdvisor.png" width={310} height={310} alt='trip-advisor' />
+                <CloudinaryImage localSrc="/images/tripAdvisor.png" width={310} height={310} alt='trip-advisor' />
                 <p>Based on 1,934 traveler reviews</p>
                 <p>Read review</p>
               </div>

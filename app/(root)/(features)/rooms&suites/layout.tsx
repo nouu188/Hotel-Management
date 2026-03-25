@@ -1,6 +1,8 @@
+"use client";
+
 import Breadcrumbs from "@/components/Breadcrumbs";
+import CloudinaryImage from "@/components/CloudinaryImage";
 import { CircleUserRound, Gem, MapPin } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -13,10 +15,10 @@ export default function RootLayout({
   return (
     <div lang="en"> 
         <section className="relative w-full h-[510px]"> 
-            <Image 
-                src="/images/14.jpg" 
-                fill 
-                className="object-cover" 
+            <CloudinaryImage
+                localSrc="/images/14.jpg"
+                fill
+                className="object-cover"
                 alt="layout"
                 />
             {/* Lớp phủ tạo shadow từ trên xuống */}
@@ -48,7 +50,7 @@ export default function RootLayout({
 
                 <div className='flex flex-col justify-center text-center'>
                   <Link className='hover:text-[#BF882E] transition-colors duration-300 cursor-pointer' href="https://www.tripadvisor.com/Hotel_Review-g293925-d25442757-Reviews-La_Siesta_Premium_Saigon-Ho_Chi_Minh_City.html">TripAdvisor Traveler Rating</Link>
-                  <Image src="/images/tripAdvisor.png" width={310} height={310} alt='trip-advisor' />
+                  <CloudinaryImage localSrc="/images/tripAdvisor.png" width={310} height={310} alt='trip-advisor' />
                   <p>Based on 1,934 traveler reviews</p>
                   <p>Read review</p>
                 </div>

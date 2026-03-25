@@ -6,7 +6,7 @@ import RoomGuestSelector from "@/components/selector/Rooms_Guests_Selector";
 import { hotelBranches } from "@/constants/hotelBranches";
 import { useSyncBookingQuery } from "@/hooks/useSyncBookingQuery";
 import { AppDispatch, RootState } from "@/store/store";
-import Image from "next/image";
+import CloudinaryImage from "@/components/CloudinaryImage";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
@@ -66,8 +66,8 @@ const BookDirectOnline = () => {
     return (
         <div className={`flex flex-col justify-center bg-[#eff8fc] bg-no-repeat`}>
             <div className="max-md:hidden relative w-full h-[260px]">
-                <Image
-                    src="/images/13.jpg"
+                <CloudinaryImage
+                    localSrc="/images/13.jpg"
                     fill
                     className="object-cover"
                     alt="layout auth"

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import React, { useMemo } from 'react'
 import { hotelExtras } from '@/constants/extraService';
-import Image from 'next/image';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import { Checkbox } from '../../ui/checkbox';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { useDispatch, useSelector } from 'react-redux';
@@ -130,7 +130,7 @@ const ExtrasSelector = ({ isOpen, onToggle, onComplete, completedPrev }: ExtrasS
                                 <div key={index} className=' mt-4'>
                                     <div className='flex raleway mx-3 gap-3'>
                                         <div className='w-[274px] h-[134px]'>
-                                            <Image src={item.imgUrl} width={234} height={184} className='object-cover rounded-[5px]' alt={item.name}/>
+                                            <CloudinaryImage localSrc={item.imgUrl} width={234} height={184} className='object-cover rounded-[5px]' alt={item.name}/>
                                         </div>
                                         <div className='w-full flex flex-col justify-between'>
                                             <div>

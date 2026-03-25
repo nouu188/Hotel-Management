@@ -2,6 +2,7 @@
 
 import { RootState } from '@/store/store'
 import Image from 'next/image';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -22,8 +23,8 @@ const RoomSelectedBookingSection = () => {
             <div key={item.instanceId} className="pb-4 max-w-[620px] flex flex-col border-1 border-[#b4b2b2] bg-white rounded-sm shadow">
                 <div className="flex gap-3">
                     <div className="w-[200px] h-[160px] relative shrink-0">
-                        <Image
-                            src="/images/8.jpg"
+                        <CloudinaryImage
+                            localSrc="/images/8.jpg"
                             fill
                             alt="room"
                             className="object-cover rounded-tl-sm"
@@ -54,7 +55,7 @@ const RoomSelectedBookingSection = () => {
                             <p className="text-[13px] text-gray-700">
                                 {item.originalRoomData.roomType.description?.length > 150 ? (
                                     <>
-                                        {item.originalRoomData.roomType.area}m²
+                                        {item.originalRoomData.roomType.area}m²{' '}
                                         {expanded[item.originalRoomData.id]
                                             ? item.originalRoomData.roomType.description
                                             : item.originalRoomData.roomType.description.slice(0, 220) + '...'}

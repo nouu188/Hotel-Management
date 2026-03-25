@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { hotelBranches } from '@/constants/hotelBranches';
-import Image from 'next/image';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import React from 'react'
 
 const Hotel = [
@@ -149,7 +149,7 @@ const NavigationLinksFooter = () => {
             </section>
             <section className='space-y-5'>
                 <h1 className='text-[16px] text-[#BF882E]'>ACCEPTED CARDS</h1>
-                <Image src="/images/visa-mastercard.png" width={110} height={110} alt='visa'/>
+                <CloudinaryImage localSrc="/images/visa-mastercard.png" width={110} height={110} alt='visa'/>
             </section>
             <section className='mt-4'>
                 © Copyright 2023. La Siesta Premium Saigon Central. All rights reserved.
@@ -268,7 +268,7 @@ const NavigationLinksFooter = () => {
             </section>
             <section className='space-y-3'>
                 <h1 className='text-[16px] text-[#BF882E]'>ACCEPTED CARDS</h1>
-                <Image src="/images/visa-mastercard.png" width={110} height={110} alt='visa'/>
+                <CloudinaryImage localSrc="/images/visa-mastercard.png" width={110} height={110} alt='visa'/>
             </section>
             <section className='text-center'>
                 © Copyright 2023. La Siesta Premium Saigon Central. All rights reserved.

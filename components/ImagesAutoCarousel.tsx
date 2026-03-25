@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image'
+import CloudinaryImage from '@/components/CloudinaryImage'
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 import { imagesCarousel } from '@/constants/imagesCarousel';
 import { Button } from './ui/button';
@@ -33,10 +34,10 @@ const ImagesAutoCarousel = () => {
                     <CarouselItem key={index} className="relative w-full h-screen">
                         
                     <div className="relative w-full h-[95%] max-lg:h-[100%]">
-                        <Image 
-                            src={item?.imgUrl as string} 
-                            className="object-cover" 
-                            fill 
+                        <CloudinaryImage
+                            localSrc={item?.imgUrl as string}
+                            className="object-cover"
+                            fill
                             alt="ImageCarousel"
                         />
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import CloudinaryImage from "@/components/CloudinaryImage";
 import React from "react";
 
 export default function Layout({
@@ -12,10 +12,10 @@ export default function Layout({
     return (
         <div lang="en" className="bg-[#eff8fc]"> 
             <section className="relative w-full h-[310px]"> 
-                <Image 
-                    src="/images/14.jpg" 
-                    fill 
-                    className="object-cover" 
+                <CloudinaryImage
+                    localSrc="/images/14.jpg"
+                    fill
+                    className="object-cover"
                     alt="layout"
                 />
 

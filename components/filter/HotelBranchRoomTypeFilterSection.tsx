@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
@@ -53,8 +54,8 @@ const HotelBranchRoomTypeFilterSection = () => {
               <div key={index} className={("max-w-[695px] flex flex-col border-1 border-[#b4b2b2] bg-white rounded-sm shadow")}>
                   <div className={("border-b-1 border-[#b4b2b2] pb-4 flex gap-3 max-md:flex-col")}>
                       <div className="lg:w-[300px] lg:h-[200px] md:w-[260px] md:h-[180px] max-md:h-120 overflow-hidden w-full h-full rounded-tl-sm group relative shrink-0">
-                          <Image
-                            src="/images/8.jpg"
+                          <CloudinaryImage
+                            localSrc="/images/8.jpg"
                             fill
                             alt="room"
                             className="object-cover transform group-hover:scale-105 overflow-hidden transition-transform duration-500 ease-in-out"

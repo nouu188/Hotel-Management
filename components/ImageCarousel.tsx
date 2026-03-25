@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image'
+import CloudinaryImage from '@/components/CloudinaryImage'
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 import { cn } from '@/lib/utils';
 import { useEmblaCarousel } from '@/hooks/use-EmblaCarousel';
@@ -32,10 +33,10 @@ const ImagesCarousel = ({ width, height, imgUrl, altText }: ImagesCarouselProps)
                     {imgUrl?.map((item, index) => (
                         <CarouselItem key={index} className={cn("relative h-120", height)}>    
                             <div className="relative h-full overflow-hidden group">
-                                <Image 
-                                    src={item} 
+                                <CloudinaryImage
+                                    localSrc={item}
                                     className="object-cover transform group-hover:scale-105 overflow-hidden transition-transform duration-500 ease-in-out"
-                                    fill 
+                                    fill
                                     alt={altText as string}
                                 />
 
