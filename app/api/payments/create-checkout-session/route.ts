@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import prisma from "@/lib/prisma";
+import Stripe from "stripe";
 import stripe from "@/lib/stripe";
 import { CreateCheckoutSessionSchema } from "@/lib/validation";
 import { calculateBookingAmount } from "@/lib/utils/price-calculation";
+
+const STRIPE_MINIMUM_AMOUNT_VND = 12500;;
 
 export async function POST(request: Request) {
   try {
@@ -114,6 +117,13 @@ export async function POST(request: Request) {
       usingServiceItems,
     });
 
+    if (total < STRIPE_MINIMUM_AMOUNT_VND) {
+      return NextResponse.json(
+        { success: false, message: `Total amount (${total.toLocaleString()}₫) is below the minimum required for payment processing.` },
+        { status: 400 }
+      );
+    }
+
     const stripeLineItems = lineItems.map((item) => ({
       price_data: {
         currency: "vnd",
@@ -156,6 +166,15 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[API] POST /payments/create-checkout-session error:", error);
+
+    if (error instanceof Stripe.errors.StripeError) {
+      const statusCode = error.statusCode ?? 500;
+      return NextResponse.json(
+        { success: false, message: error.message, code: error.code },
+        { status: statusCode >= 400 && statusCode < 500 ? statusCode : 502 }
+      );
+    }
+
     return NextResponse.json(
       { success: false, message: "An unexpected error occurred." },
       { status: 500 }

@@ -71,7 +71,7 @@ export async function POST(request: Request) {
           : Promise.resolve(), 
       ]);
 
-      const inventoryUpdatePromises = bookingRoomItems.map(item => 
+      const inventoryUpdatePromises = bookingRoomItems.map(item =>
         tx.roomAvailability.updateMany({
           where: { hotelBranchRoomTypeId: item.hotelBranchRoomTypeId, date: { gte: fromDate, lt: toDate } },
           data: { bookedRooms: { increment: item.quantityBooked } },
@@ -79,24 +79,21 @@ export async function POST(request: Request) {
       );
       await Promise.all(inventoryUpdatePromises);
 
-      const PENDING_TIME_LIMIT_MS = 35 * 60 * 1000;
-      const queue = getBookingExpirationQueue();
-
-      await queue.add(
-        'expire-booking-job',
-        { bookingId: newBooking.id },
-        {
-          delay: PENDING_TIME_LIMIT_MS,
-          jobId: newBooking.id, // Dùng bookingId làm jobId để tránh trùng lặp
-        }
-      );
-      console.log(`[API] Scheduled expiration job for booking ${newBooking.id}`);
-
       return { newBooking };
     }, {
       timeout: 15000,
     });
 
+    const PENDING_TIME_LIMIT_MS = 35 * 60 * 1000;
+    const queue = getBookingExpirationQueue();
+    await queue.add(
+      'expire-booking-job',
+      { bookingId: result.newBooking.id },
+      {
+        delay: PENDING_TIME_LIMIT_MS,
+        jobId: result.newBooking.id,
+      }
+    );
 
     return NextResponse.json({ success: true, data: result }, { status: 201 });
   } catch (error) {

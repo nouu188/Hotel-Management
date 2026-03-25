@@ -1,6 +1,7 @@
+import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const config: Config = {
   theme: {
     extend: {
       keyframes: {
@@ -13,22 +14,23 @@ module.exports = {
           to: { height: "0" },
         },
         fadeIn: {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
+          from: { opacity: "0" },
+          to: { opacity: "1" },
         },
         fadeOut: {
-          from: { opacity: '1' },
-          to: { opacity: '0' },
+          from: { opacity: "1" },
+          to: { opacity: "0" },
         },
       },
       animation: {
         "collapsible-down": "collapsible-down 0.2s ease-out",
         "collapsible-up": "collapsible-up 0.2s ease-out",
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'fade-out': 'fadeOut 0.5s ease-in-out',
+        "fade-in": "fadeIn 0.5s ease-in-out",
+        "fade-out": "fadeOut 0.5s ease-in-out",
       },
-
     },
   },
-  plugins: [require("tailwindcss-animate")], 
-}
+  plugins: [tailwindcssAnimate],
+};
+
+export default config;
