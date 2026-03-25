@@ -11,20 +11,21 @@ import { getServerSession } from 'next-auth';
 
 export async function POST(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // 1. Xác thực và cấp quyền (Không đổi)
+        const { id } = await params;
+
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {
             return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
         }
-        
-        if (session.user.id !== params.id) {
+
+        if (session.user.id !== id) {
             throw new UnauthorizedError("You can only update your own avatar.");
         }
 
-        const userId = params.id;
+        const userId = id;
 
         // 2. Xử lý body JSON thay vì FormData
         const body = await request.json();

@@ -1,6 +1,6 @@
 // scripts/run-worker.ts
 import { Worker, Job } from 'bullmq';
-import { getRedisConnection, BOOKING_EXPIRATION_QUEUE_NAME } from '../lib/queue.js'; // THÊM .js
+import { getRedisConnectionOptions, BOOKING_EXPIRATION_QUEUE_NAME } from '../lib/queue.js';
 import { bookingExpirationProcessor, BookingJobData } from '../lib/worker-logic.js'; // THÊM .js
 
 console.log('🚀 Starting BullMQ Worker...');
@@ -9,7 +9,7 @@ const worker = new Worker<BookingJobData>(
   BOOKING_EXPIRATION_QUEUE_NAME,
   bookingExpirationProcessor,
   {
-    connection: getRedisConnection(),
+    connection: getRedisConnectionOptions(),
     concurrency: 10, // Xử lý tối đa 10 job cùng lúc
   }
 );
@@ -32,7 +32,6 @@ console.log(`🎧 Worker is listening for jobs on queue "${BOOKING_EXPIRATION_QU
 const gracefulShutdown = async () => {
   console.log(' gracefully shutting down...');
   await worker.close();
-  getRedisConnection().disconnect();
   process.exit(0);
 };
 

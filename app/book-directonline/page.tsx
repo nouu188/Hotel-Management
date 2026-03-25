@@ -51,7 +51,8 @@ const BookDirectOnline = () => {
                 console.error("Error parsing dates from URL:", error);
             }
         }
-    }, [searchParams]); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams]);
 
     useSyncBookingQuery({
         selectedBranch,

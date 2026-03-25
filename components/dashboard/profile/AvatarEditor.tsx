@@ -114,6 +114,7 @@ startTransition(async () => {
         className="relative w-32 h-32 group cursor-pointer" 
         onClick={() => !isPending && fileInputRef.current?.click()}
       >
+{/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={displayImage || "/icons/user.svg"}
           alt="Avatar"

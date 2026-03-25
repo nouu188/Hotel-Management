@@ -5,7 +5,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z, ZodType } from "zod";
+import { ZodType } from "zod";
 import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,11 @@ import ROUTES from '@/constants/route';
 import { toast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
-interface AuthFormProps<T> {
+// Zod3Type expected by @hookform/resolvers@5 requires `typeName` in `_def`,
+// which all concrete Zod schemas have but the abstract `ZodType<T>` doesn't expose.
+type Zod3Schema<T> = ZodType<T> & { _def: { typeName: string } };
+
+interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
   onSubmitSignUp?: (data: T) => Promise<ActionResponse>;
@@ -26,14 +30,14 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmitSignUp,
   formType
-}: AuthFormProps<T>) => { 
+}: AuthFormProps<T>) => {
   const router = useRouter();
   const { update } = useSession();
-  
+
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<T>({
+    resolver: zodResolver(schema as Zod3Schema<T>),
     defaultValues: defaultValues as DefaultValues<T>,
   });
 

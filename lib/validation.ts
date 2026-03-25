@@ -153,6 +153,12 @@ export const BookingRequestSchema = z.object({
 
 export type BookingRequestBody = z.infer<typeof BookingRequestSchema>;
 
+export const CreateCheckoutSessionSchema = z.object({
+  bookingId: z.string().uuid(),
+});
+
+export type CreateCheckoutSessionBody = z.infer<typeof CreateCheckoutSessionSchema>;
+
 export const RoomSearchSchema = z.object({
   branchName: z.string().min(1),
   dateRange: z.object({

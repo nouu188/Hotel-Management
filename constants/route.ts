@@ -7,7 +7,9 @@ const ROUTES = {
     ABOUT_US: "/about_us",
     SIGN_IN: "/sign-in",
     SIGN_UP: "/sign-up",
-    SIGN_IN_WITH_OAUTH: "/signin-with-oauth"
+    SIGN_IN_WITH_OAUTH: "/signin-with-oauth",
+    PAYMENT: "/payment",
+    PAYMENT_SUCCESS: "/payment/success",
 }
 
 export default ROUTES;

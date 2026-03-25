@@ -3,7 +3,7 @@
 import BookARoomButton from '@/components/BookARoomButton';
 import ImagesCarousel from '@/components/ImageCarousel'
 import { roomTypeInBrief } from '@/constants/roomTypeInBrief';
-import { Bath, Bed, Cigarette, Image, Scaling, UserPlus } from 'lucide-react'
+import { Bath, Bed, Cigarette, Image as ImageIcon, Scaling, UserPlus } from 'lucide-react'
 
 const Page = () => {
   return (
@@ -26,7 +26,7 @@ const Page = () => {
                         Room size: 44 - 50 sqm
                     </div>
                     <div className='flex items-center gap-1'>
-                        <Image width={14} height={14}/>
+                        <ImageIcon width={14} height={14}/>
                         View: Neighboring or street view
                     </div>
                     <div className='flex items-start gap-1'>

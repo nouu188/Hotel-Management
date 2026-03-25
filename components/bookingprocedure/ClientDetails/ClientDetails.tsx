@@ -12,7 +12,7 @@ import { Textarea } from '../../ui/textarea';
 import { FormInputField, FormSelectField } from '@/components/FormFieldInput';
 import {  ClientDetailsFormValues, useClientDetailsForm } from '@/hooks/useClientDetailForm';
 
-const inputFields = [
+const inputFields: { name: keyof ClientDetailsFormValues; placeholder: string; type?: string }[] = [
     { name: 'firstName', placeholder: 'First name' },
     { name: 'lastName', placeholder: 'Last name' },
     { name: 'email', placeholder: 'E-mail', type: 'email' },

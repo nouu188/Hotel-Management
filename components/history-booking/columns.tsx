@@ -131,49 +131,7 @@ export const columns: ColumnDef<Booking>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const booking = row.original;
-      const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-      const handleCopyId = () => {
-        navigator.clipboard.writeText(booking.id);
-        toast.success("Booking ID copied to clipboard!");
-      };
-
-      return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DropdownMenu modal={false}> 
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              
-              <DropdownMenuItem onSelect={(e) => {
-                e.preventDefault();
-                setIsDialogOpen(true);
-              }}>
-                <Eye className="mr-2 h-4 w-4" />
-                <span>View details</span>
-              </DropdownMenuItem>
-              
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem onSelect={handleCopyId}>
-                <Copy className="mr-2 h-4 w-4" />
-                <span>Copy Booking ID</span>
-              </DropdownMenuItem>
-
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <BookingDetailsDialogContent booking={booking} />
-        </Dialog>
-      );
-    },
+    cell: ({ row }) => <ActionsCell booking={row.original} />,
   },
 ];
 
@@ -181,6 +139,44 @@ import { DialogContent, DialogHeader, DialogTitle, DialogDescription, Dialog } f
 import { Badge } from "@/components/ui/badge";
 import dayjs from "dayjs";
 import { roomTypeInBrief } from "@/constants/roomTypeInBrief"
+
+const ActionsCell = ({ booking }: { booking: Booking }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleCopyId = () => {
+    navigator.clipboard.writeText(booking.id);
+    toast.success("Booking ID copied to clipboard!");
+  };
+
+  return (
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem onSelect={(e) => {
+            e.preventDefault();
+            setIsDialogOpen(true);
+          }}>
+            <Eye className="mr-2 h-4 w-4" />
+            <span>View details</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onSelect={handleCopyId}>
+            <Copy className="mr-2 h-4 w-4" />
+            <span>Copy Booking ID</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <BookingDetailsDialogContent booking={booking} />
+    </Dialog>
+  );
+};
 
 const DetailRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <div className="grid grid-cols-3 gap-4 py-3 border-b border-slate-100 last:border-b-0">

@@ -70,6 +70,7 @@ export const useRoomTypeFilter = () => {
     };
 
     fetchRooms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, dateRange]);
 
   const numberOfNights = fromDate && toDate ? calculateNights(fromDate, toDate) : 0;

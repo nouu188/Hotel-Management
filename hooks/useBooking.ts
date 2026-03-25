@@ -134,11 +134,12 @@ export const useBooking = () => {
 
             if (res.success && res.data) {
                 toast({
-                    title: "Booking Successful!",
-                    description: "Your booking has been confirmed. Welcome to La Sieste.",
+                    title: "Booking Created!",
+                    description: "Redirecting to payment...",
                 });
                 dispatch(clearAllRoomSelections());
-                router.push(ROUTES.HOME); 
+                const bookingId = (res.data as { newBooking: { id: string } }).newBooking.id;
+                router.push(`/payment/${bookingId}`);
             } else {
                 throw new Error("Could not complete your booking. Please try again.");
             }

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import ImagesCarousel from './ImageCarousel'
-import { ArrowRight, Bath, Bed, Cigarette, Image, Scaling, UserPlus } from 'lucide-react'
+import { ArrowRight, Bath, Bed, Cigarette, Image as ImageIcon, Scaling, UserPlus } from 'lucide-react'
 import BookARoomButton from './BookARoomButton'
 import { Button } from './ui/button'
 import { usePathname } from 'next/navigation'
@@ -50,7 +50,7 @@ const RoomTypeInBrief = ( item: RoomTypeInBriefProps ) => {
                 Room size: {item.roomSize}
             </div>
             <div className='flex items-center gap-1'>
-                <Image width={15} height={15}/>
+                <ImageIcon width={15} height={15}/>
                 View:{item.view}
             </div>
             <div className='flex items-start gap-1'>

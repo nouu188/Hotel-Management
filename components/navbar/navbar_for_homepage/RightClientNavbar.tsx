@@ -12,6 +12,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { Avatar, AvatarImage } from '../../ui/avatar'
+import Image from 'next/image'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Button } from '../../ui/button';
@@ -54,10 +55,12 @@ const RightClientNavbar = () => {
                                                 <AvatarImage className="object-cover" src={avatarUrl} />
                                             </Avatar>
                                         ) : (
-                                            <img
+                                            <Image
                                                 src="/icons/user.svg"
                                                 alt="Default avatar"
-                                                className="w-10 h-10 object-cover rounded-full p-4 bg-gray-100"
+                                                width={40}
+                                                height={40}
+                                                className="object-cover rounded-full p-4 bg-gray-100"
                                             />
                                         )}
                                     </MenubarTrigger>

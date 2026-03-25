@@ -111,6 +111,15 @@ export const api = {
                 method: "DELETE"
             }),
     },
+    payments: {
+        createCheckoutSession: (bookingId: string) =>
+            fetchHandler(`${API_BASE_URL}/payments/create-checkout-session`, {
+                method: "POST",
+                body: JSON.stringify({ bookingId }),
+            }),
+        getByBookingId: (bookingId: string) =>
+            fetchHandler(`${API_BASE_URL}/payments/${bookingId}`),
+    },
     hotelBranchRoomType: {
         getQuantityById: (roomTypeId: string, hotelBranchId: string, dateRange: DateRange | undefined) => 
             fetchHandler(`${API_BASE_URL}/hotelBranchRoomType/quantity`, {

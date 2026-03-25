@@ -118,6 +118,7 @@ model Booking {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   bill             Bill?
+  payment          Payment?
   user             User              @relation(fields: [userId], references: [id])
   bookingGuest     BookingGuest?
   bookingRoomItems BookingRoomItem[]
@@ -205,6 +206,28 @@ model Service {
   usingServices UsingService[]
 }
 
+model Payment {
+  id                  String        @id @default(uuid())
+  bookingId           String        @unique
+  stripeSessionId     String        @unique
+  stripePaymentIntent String?       @unique
+  amount              Float
+  currency            String        @default("vnd")
+  status              PaymentStatus @default(PENDING)
+  paidAt              DateTime?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  booking             Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  EXPIRED
+  REFUNDED
+}
+
 // -- ENUMS --
 
 enum PaymentMethod {
@@ -213,6 +236,7 @@ enum PaymentMethod {
   CREDITCARD
   DEBITCARD
   PREPAIDCARD
+  STRIPE
   PENDING
 }
 

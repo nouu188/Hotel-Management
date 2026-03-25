@@ -1,18 +1,18 @@
 // components/ui/FormInputField.tsx (hoặc một đường dẫn phù hợp)
 
 import React from 'react';
-import { Control } from 'react-hook-form';
+import { Control, FieldValues, Path } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-interface FormInputFieldProps {
-  control: Control<any>;
-  name: string;
+interface FormInputFieldProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
   placeholder?: string;
 }
 
-export const FormInputField = ({ control, name, placeholder, ...props }: FormInputFieldProps) => {
+export const FormInputField = <T extends FieldValues>({ control, name, placeholder, ...props }: FormInputFieldProps<T>) => {
   return (
     <FormField
       control={control}
@@ -39,15 +39,15 @@ interface Option {
   label: string;
 }
 
-interface FormSelectFieldProps {
-  control: Control<any>;
-  name: string;
+interface FormSelectFieldProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
   placeholder: string;
   options: Option[];
   description?: string;
 }
 
-export const FormSelectField = ({ control, name, placeholder, options, description }: FormSelectFieldProps) => {
+export const FormSelectField = <T extends FieldValues>({ control, name, placeholder, options, description }: FormSelectFieldProps<T>) => {
   return (
     <FormField
       control={control}

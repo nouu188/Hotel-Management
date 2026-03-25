@@ -1,9 +1,10 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { parseISO } from 'date-fns';
-import {BookingRequestSchema } from "@/lib/validation";
+import { BookingRequestSchema } from "@/lib/validation";
 import { Prisma } from "@prisma/client";
 import { getBookingExpirationQueue } from "@/lib/queue";
+import { calculateBookingAmount } from "@/lib/utils/price-calculation";
 
 export async function POST(request: Request) {
   try {
@@ -28,21 +29,14 @@ export async function POST(request: Request) {
     
     const [roomTypes, services] = await Promise.all([roomTypesDataPromise, servicesDataPromise]);
 
-    // Tính toán tổng chi phí 
-    let finalAmount = 0;
     const numberOfNights = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 3600 * 24));
-    for (const item of bookingRoomItems) {
-      const roomTypeInfo = roomTypes.find(rt => rt.id === item.hotelBranchRoomTypeId);
-      if (!roomTypeInfo) throw new Error(`Không tìm thấy thông tin giá cho phòng ${item.hotelBranchRoomTypeId}`);
-      finalAmount += roomTypeInfo.roomType.price * item.quantityBooked * numberOfNights;
-    }
-    if (usingServiceItems) {
-      for (const item of usingServiceItems) {
-        const serviceInfo = services.find(s => s.id === item.serviceId);
-        if (!serviceInfo) throw new Error(`Không tìm thấy dịch vụ ${item.serviceId}`);
-        finalAmount += serviceInfo.price * item.quantity;
-      }
-    }
+    const { total: finalAmount } = calculateBookingAmount({
+      bookingRoomItems,
+      roomTypes,
+      numberOfNights,
+      services,
+      usingServiceItems,
+    });
 
     const result = await prisma.$transaction(async (tx) => {
       const availabilityChecksPromises = bookingRoomItems.map(item => 
@@ -85,7 +79,7 @@ export async function POST(request: Request) {
       );
       await Promise.all(inventoryUpdatePromises);
 
-      const PENDING_TIME_LIMIT_MS = 15 * 60 * 1000; // 15 phút
+      const PENDING_TIME_LIMIT_MS = 35 * 60 * 1000;
       const queue = getBookingExpirationQueue();
 
       await queue.add(
