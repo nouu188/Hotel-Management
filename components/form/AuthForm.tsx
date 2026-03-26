@@ -57,8 +57,9 @@ const AuthForm = <T extends FieldValues>({
             title: "Success",
             description: "Signed in successfully",
           });
-          await update();
-          router.push(ROUTES.HOME);
+          const updatedSession = await update();
+          const role = (updatedSession as any)?.user?.role;
+          router.push(role === "ADMIN" ? ROUTES.ADMIN : ROUTES.HOME);
           router.refresh();
         } else {
           toast({

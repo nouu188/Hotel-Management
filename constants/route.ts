@@ -10,6 +10,10 @@ const ROUTES = {
     SIGN_IN_WITH_OAUTH: "/signin-with-oauth",
     PAYMENT: "/payment",
     PAYMENT_SUCCESS: "/payment/success",
+    ADMIN: "/admin",
+    ADMIN_OVERVIEW: "/admin/overview",
+    ADMIN_BOOKINGS: "/admin/bookings",
+    ADMIN_PAYMENTS: "/admin/payments",
 }
 
 export default ROUTES;

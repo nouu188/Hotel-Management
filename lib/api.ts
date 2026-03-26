@@ -121,10 +121,29 @@ export const api = {
             fetchHandler(`${API_BASE_URL}/payments/${bookingId}`),
     },
     hotelBranchRoomType: {
-        getQuantityById: (roomTypeId: string, hotelBranchId: string, dateRange: DateRange | undefined) => 
+        getQuantityById: (roomTypeId: string, hotelBranchId: string, dateRange: DateRange | undefined) =>
             fetchHandler(`${API_BASE_URL}/hotelBranchRoomType/quantity`, {
                 method: "POST",
                 body: JSON.stringify({ roomTypeId, hotelBranchId, dateRange })
             }),
-    }
+    },
+    admin: {
+        stats: {
+            getOverview: () => fetchHandler(`${API_BASE_URL}/admin/stats`),
+            revenueTrend: (days = 30) => fetchHandler(`${API_BASE_URL}/admin/stats/revenue-trend?days=${days}`),
+            bookingsByStatus: () => fetchHandler(`${API_BASE_URL}/admin/stats/bookings-by-status`),
+        },
+        bookings: {
+            getAll: (params: URLSearchParams) => fetchHandler(`${API_BASE_URL}/admin/bookings?${params}`),
+            getById: (id: string) => fetchHandler(`${API_BASE_URL}/admin/bookings/${id}`),
+            updateStatus: (id: string, status: string) =>
+                fetchHandler(`${API_BASE_URL}/admin/bookings/${id}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({ status }),
+                }),
+        },
+        payments: {
+            getAll: (params: URLSearchParams) => fetchHandler(`${API_BASE_URL}/admin/payments?${params}`),
+        },
+    },
 }
