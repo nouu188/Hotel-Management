@@ -12,7 +12,7 @@ import { PaymentStatusBadge } from "../payments/PaymentStatusBadge";
 import { AdminBooking } from "./AdminBookingColumns";
 import { formatVND } from "../overview/KpiCardGrid";
 import { Separator } from "@/components/ui/separator";
-import dayjs from "dayjs";
+import { format } from "date-fns";
 
 interface BookingDetailSheetProps {
   booking: AdminBooking | null;
@@ -49,9 +49,9 @@ export function BookingDetailSheet({ booking, open, onOpenChange }: BookingDetai
             <h3 className="text-sm font-semibold text-slate-700 mb-2">Booking Info</h3>
             <div className="divide-y divide-slate-100">
               <DetailRow label="Status" value={<BookingStatusBadge status={booking.status} />} />
-              <DetailRow label="Check-in" value={dayjs(booking.fromDate).format("MMM D, YYYY")} />
-              <DetailRow label="Check-out" value={dayjs(booking.toDate).format("MMM D, YYYY")} />
-              <DetailRow label="Created" value={dayjs(booking.createdAt).format("MMM D, YYYY HH:mm")} />
+              <DetailRow label="Check-in" value={format(new Date(booking.fromDate), "MMM d, yyyy")} />
+              <DetailRow label="Check-out" value={format(new Date(booking.toDate), "MMM d, yyyy")} />
+              <DetailRow label="Created" value={format(new Date(booking.createdAt), "MMM d, yyyy HH:mm")} />
             </div>
           </section>
 

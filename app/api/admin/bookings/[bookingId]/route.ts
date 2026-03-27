@@ -59,12 +59,11 @@ export async function PATCH(
     const body = await request.json();
     const { status } = body;
 
-    if (!status || !["CONFIRMED", "CANCELLED"].includes(status)) {
-      return NextResponse.json(
-        { success: false, message: "Invalid status. Must be CONFIRMED or CANCELLED." },
-        { status: 400 }
-      );
-    }
+    const validTransitions: Record<string, string[]> = {
+      PENDING: ["CONFIRMED", "CANCELLED"],
+      CONFIRMED: ["CHECKED_IN", "CANCELLED"],
+      CHECKED_IN: ["CHECKED_OUT"],
+    };
 
     const existingBooking = await prisma.booking.findUnique({
       where: { id: bookingId },
@@ -73,6 +72,14 @@ export async function PATCH(
 
     if (!existingBooking) {
       return NextResponse.json({ success: false, message: "Booking not found" }, { status: 404 });
+    }
+
+    const allowedStatuses = validTransitions[existingBooking.status] ?? [];
+    if (!status || !allowedStatuses.includes(status)) {
+      return NextResponse.json(
+        { success: false, message: `Cannot transition from ${existingBooking.status} to ${status}` },
+        { status: 400 }
+      );
     }
 
     let updatedBooking;
@@ -107,7 +114,7 @@ export async function PATCH(
     } else {
       updatedBooking = await prisma.booking.update({
         where: { id: bookingId },
-        data: { status: "CONFIRMED" },
+        data: { status },
         include: bookingInclude,
       });
     }

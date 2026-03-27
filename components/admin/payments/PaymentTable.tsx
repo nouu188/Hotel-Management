@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   SortingState,
   flexRender,
@@ -27,7 +27,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PaymentSummaryCards } from "./PaymentSummaryCards";
-import { AdminPayment, adminPaymentColumns } from "./PaymentColumns";
+import { PaymentDashboardCharts } from "./PaymentDashboardCharts";
+import { PaymentDetailSheet } from "./PaymentDetailSheet";
+import { AdminPayment, getAdminPaymentColumns } from "./PaymentColumns";
 import { PaymentStatus } from "@prisma/client";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
@@ -43,6 +45,18 @@ export function PaymentTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({ page: 1, limit: 20, total: 0, totalPages: 0 });
   const [summary, setSummary] = useState({ totalRevenue: 0, pendingAmount: 0, refundedAmount: 0 });
+  const [selectedPayment, setSelectedPayment] = useState<AdminPayment | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  const handleViewDetails = useCallback((payment: AdminPayment) => {
+    setSelectedPayment(payment);
+    setSheetOpen(true);
+  }, []);
+
+  const columns = useMemo(
+    () => getAdminPaymentColumns(handleViewDetails),
+    [handleViewDetails]
+  );
 
   const fetchPayments = useCallback(async () => {
     setLoading(true);
@@ -76,7 +90,7 @@ export function PaymentTable() {
 
   const table = useReactTable({
     data: payments,
-    columns: adminPaymentColumns,
+    columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
@@ -87,6 +101,8 @@ export function PaymentTable() {
 
   return (
     <div className="space-y-6">
+      <PaymentDashboardCharts />
+
       <PaymentSummaryCards data={summary} />
 
       <div className="flex flex-wrap items-center gap-3">
@@ -133,7 +149,7 @@ export function PaymentTable() {
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i}>
-                  {adminPaymentColumns.map((_, j) => (
+                  {columns.map((_, j) => (
                     <TableCell key={j} className="p-4">
                       <Skeleton className="h-5 w-full" />
                     </TableCell>
@@ -152,7 +168,7 @@ export function PaymentTable() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={adminPaymentColumns.length} className="h-24 text-center">
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No payments found.
                 </TableCell>
               </TableRow>
@@ -174,6 +190,12 @@ export function PaymentTable() {
           </Button>
         </div>
       </div>
+
+      <PaymentDetailSheet
+        payment={selectedPayment}
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+      />
     </div>
   );
 }

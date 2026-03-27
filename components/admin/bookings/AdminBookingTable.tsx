@@ -47,7 +47,7 @@ export function AdminBookingTable() {
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
     bookingId: string;
-    action: "CONFIRMED" | "CANCELLED";
+    action: string;
   }>({ open: false, bookingId: "", action: "CONFIRMED" });
   const [pagination, setPagination] = useState({ page: 1, limit: 20, total: 0, totalPages: 0 });
 
@@ -83,7 +83,7 @@ export function AdminBookingTable() {
     setSheetOpen(true);
   }, []);
 
-  const handleUpdateStatus = useCallback((bookingId: string, action: "CONFIRMED" | "CANCELLED") => {
+  const handleUpdateStatus = useCallback((bookingId: string, action: string) => {
     setConfirmDialog({ open: true, bookingId, action });
   }, []);
 
@@ -214,12 +214,24 @@ export function AdminBookingTable() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {confirmDialog.action === "CONFIRMED" ? "Confirm Booking" : "Cancel Booking"}
+              {
+                {
+                  CONFIRMED: "Confirm Booking",
+                  CANCELLED: "Cancel Booking",
+                  CHECKED_IN: "Check In Guest",
+                  CHECKED_OUT: "Check Out Guest",
+                }[confirmDialog.action] ?? "Update Booking"
+              }
             </DialogTitle>
             <DialogDescription>
-              {confirmDialog.action === "CONFIRMED"
-                ? "Are you sure you want to confirm this booking?"
-                : "Are you sure you want to cancel this booking? Room availability will be released."}
+              {
+                {
+                  CONFIRMED: "Are you sure you want to confirm this booking?",
+                  CANCELLED: "Are you sure you want to cancel this booking? Room availability will be released.",
+                  CHECKED_IN: "Are you sure you want to check in this guest?",
+                  CHECKED_OUT: "Are you sure you want to check out this guest?",
+                }[confirmDialog.action] ?? "Are you sure you want to update this booking?"
+              }
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -230,7 +242,14 @@ export function AdminBookingTable() {
               variant={confirmDialog.action === "CANCELLED" ? "destructive" : "default"}
               onClick={confirmStatusUpdate}
             >
-              Yes, {confirmDialog.action === "CONFIRMED" ? "confirm" : "cancel"}
+              Yes, {
+                {
+                  CONFIRMED: "confirm",
+                  CANCELLED: "cancel",
+                  CHECKED_IN: "check in",
+                  CHECKED_OUT: "check out",
+                }[confirmDialog.action] ?? "update"
+              }
             </Button>
           </DialogFooter>
         </DialogContent>

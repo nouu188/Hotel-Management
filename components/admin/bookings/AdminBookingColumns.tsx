@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, Eye, Copy, CheckCircle, XCircle } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, Eye, Copy, CheckCircle, XCircle, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
 import { BookingStatusBadge } from "./BookingStatusBadge";
 import { PaymentStatusBadge } from "../payments/PaymentStatusBadge";
 import { BookingStatus, PaymentStatus } from "@prisma/client";
-import dayjs from "dayjs";
+import { format } from "date-fns";
 import { toast } from "sonner";
 import { formatVND } from "../overview/KpiCardGrid";
 
@@ -38,7 +38,7 @@ export type AdminBooking = {
 
 export function getAdminBookingColumns(
   onViewDetails: (booking: AdminBooking) => void,
-  onUpdateStatus: (bookingId: string, status: "CONFIRMED" | "CANCELLED") => void
+  onUpdateStatus: (bookingId: string, status: string) => void
 ): ColumnDef<AdminBooking>[] {
   return [
     {
@@ -91,12 +91,12 @@ export function getAdminBookingColumns(
           Check-in <ArrowUpDown className="ml-1 h-4 w-4" />
         </div>
       ),
-      cell: ({ row }) => dayjs(row.original.fromDate).format("MMM D, YYYY"),
+      cell: ({ row }) => format(new Date(row.original.fromDate), "MMM d, yyyy"),
     },
     {
       accessorKey: "toDate",
       header: "Check-out",
-      cell: ({ row }) => dayjs(row.original.toDate).format("MMM D, YYYY"),
+      cell: ({ row }) => format(new Date(row.original.toDate), "MMM d, yyyy"),
     },
     {
       accessorKey: "status",
@@ -154,6 +154,28 @@ export function getAdminBookingColumns(
                   <DropdownMenuItem onSelect={() => onUpdateStatus(booking.id, "CANCELLED")} className="text-red-600">
                     <XCircle className="mr-2 h-4 w-4" />
                     Cancel
+                  </DropdownMenuItem>
+                </>
+              )}
+              {booking.status === "CONFIRMED" && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={() => onUpdateStatus(booking.id, "CHECKED_IN")}>
+                    <LogIn className="mr-2 h-4 w-4 text-green-600" />
+                    Check-in
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => onUpdateStatus(booking.id, "CANCELLED")} className="text-red-600">
+                    <XCircle className="mr-2 h-4 w-4" />
+                    Cancel
+                  </DropdownMenuItem>
+                </>
+              )}
+              {booking.status === "CHECKED_IN" && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={() => onUpdateStatus(booking.id, "CHECKED_OUT")}>
+                    <LogOut className="mr-2 h-4 w-4 text-slate-600" />
+                    Check-out
                   </DropdownMenuItem>
                 </>
               )}
