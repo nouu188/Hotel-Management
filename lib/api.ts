@@ -145,5 +145,33 @@ export const api = {
         payments: {
             getAll: (params: URLSearchParams) => fetchHandler(`${API_BASE_URL}/admin/payments?${params}`),
         },
+        branches: {
+            getAll: (params: URLSearchParams) => fetchHandler(`${API_BASE_URL}/admin/branches?${params}`),
+            getById: (id: string) => fetchHandler(`${API_BASE_URL}/admin/branches/${id}`),
+            create: (data: { name: string; location: string }) =>
+                fetchHandler(`${API_BASE_URL}/admin/branches`, {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                }),
+            update: (id: string, data: { name?: string; location?: string }) =>
+                fetchHandler(`${API_BASE_URL}/admin/branches/${id}`, {
+                    method: "PATCH",
+                    body: JSON.stringify(data),
+                }),
+        },
+        roomTypes: {
+            getAll: (params: URLSearchParams) => fetchHandler(`${API_BASE_URL}/admin/room-types?${params}`),
+            create: (data: Partial<RoomType>) =>
+                fetchHandler(`${API_BASE_URL}/admin/room-types`, { method: "POST", body: JSON.stringify(data) }),
+            update: (id: string, data: Partial<RoomType>) =>
+                fetchHandler(`${API_BASE_URL}/admin/room-types/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+        },
+        inventory: {
+            getAll: (params: URLSearchParams) => fetchHandler(`${API_BASE_URL}/admin/inventory?${params}`),
+            create: (data: { hotelBranchId: string; roomTypeId: string; quantity: number }) =>
+                fetchHandler(`${API_BASE_URL}/admin/inventory`, { method: "POST", body: JSON.stringify(data) }),
+            update: (id: string, data: { quantity?: number; status?: string }) =>
+                fetchHandler(`${API_BASE_URL}/admin/inventory/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+        },
     },
 }

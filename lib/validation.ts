@@ -174,3 +174,38 @@ export const RoomSearchSchema = z.object({
   message: "Ngày đến phải trước ngày đi.",
   path: ["dateRange"],
 });
+
+export const BranchCreateSchema = z.object({
+  name: z.string().min(1, "Branch name is required").max(100),
+  location: z.string().min(1, "Location is required").max(200),
+});
+
+export const BranchUpdateSchema = z.object({
+  name: z.string().min(1).max(100).optional(),
+  location: z.string().min(1).max(200).optional(),
+});
+
+export const RoomTypeCreateSchema = z.object({
+  name: z.string().min(1, "Room type name is required").max(100),
+  capacity: z.number().int().min(1, "Capacity must be at least 1"),
+  description: z.string().min(1, "Description is required"),
+  area: z.number().positive("Area must be positive"),
+  bedType: z.string().optional(),
+  bedNumb: z.number().int().min(1).optional(),
+  bathNumb: z.number().int().min(1).optional(),
+  price: z.number().int().min(0, "Price must be non-negative"),
+  image: z.array(z.string().url()).optional(),
+});
+
+export const RoomTypeUpdateSchema = RoomTypeCreateSchema.partial();
+
+export const InventoryCreateSchema = z.object({
+  hotelBranchId: z.string().uuid(),
+  roomTypeId: z.string().uuid(),
+  quantity: z.number().int().min(1),
+});
+
+export const InventoryUpdateSchema = z.object({
+  quantity: z.number().int().min(0).optional(),
+  status: z.enum(["AVAILABLE", "UNDER_MAINTENANCE", "BLOCKED"]).optional(),
+});

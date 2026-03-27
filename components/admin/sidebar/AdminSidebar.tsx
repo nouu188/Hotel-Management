@@ -3,7 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Hotel, LayoutDashboard, CalendarCheck, CreditCard } from "lucide-react";
+import {
+  Hotel,
+  LayoutDashboard,
+  CalendarCheck,
+  CreditCard,
+  Building2,
+  BedDouble,
+  Users,
+  UserCog,
+  Receipt,
+  BarChart3,
+  Bell,
+  Settings,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -19,10 +32,43 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import ROUTES from "@/constants/route";
 
-const navItems = [
-  { title: "Overview", href: ROUTES.ADMIN_OVERVIEW, icon: LayoutDashboard },
-  { title: "Bookings", href: ROUTES.ADMIN_BOOKINGS, icon: CalendarCheck },
-  { title: "Payments", href: ROUTES.ADMIN_PAYMENTS, icon: CreditCard },
+const navGroups = [
+  {
+    label: "Main",
+    items: [
+      { title: "Overview", href: ROUTES.ADMIN_OVERVIEW, icon: LayoutDashboard },
+      { title: "Bookings", href: ROUTES.ADMIN_BOOKINGS, icon: CalendarCheck },
+      { title: "Payments", href: ROUTES.ADMIN_PAYMENTS, icon: CreditCard },
+    ],
+  },
+  {
+    label: "Property",
+    items: [
+      { title: "Branches", href: ROUTES.ADMIN_BRANCHES, icon: Building2 },
+      { title: "Rooms", href: ROUTES.ADMIN_ROOMS, icon: BedDouble },
+    ],
+  },
+  {
+    label: "People",
+    items: [
+      { title: "Guests", href: ROUTES.ADMIN_GUESTS, icon: Users },
+      { title: "Staff", href: ROUTES.ADMIN_STAFF, icon: UserCog },
+    ],
+  },
+  {
+    label: "Finance",
+    items: [
+      { title: "Bills", href: ROUTES.ADMIN_BILLS, icon: Receipt },
+      { title: "Analytics", href: ROUTES.ADMIN_ANALYTICS, icon: BarChart3 },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { title: "Notifications", href: ROUTES.ADMIN_NOTIFICATIONS, icon: Bell },
+      { title: "Settings", href: ROUTES.ADMIN_SETTINGS, icon: Settings },
+    ],
+  },
 ];
 
 export function AdminSidebar() {
@@ -39,27 +85,29 @@ export function AdminSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname.startsWith(item.href)}
-                    tooltip={item.title}
-                  >
-                    <Link href={item.href}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {navGroups.map((group) => (
+          <SidebarGroup key={group.label}>
+            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname.startsWith(item.href)}
+                      tooltip={item.title}
+                    >
+                      <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter className="border-t p-4">

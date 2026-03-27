@@ -14,6 +14,14 @@ const ROUTES = {
     ADMIN_OVERVIEW: "/admin/overview",
     ADMIN_BOOKINGS: "/admin/bookings",
     ADMIN_PAYMENTS: "/admin/payments",
+    ADMIN_BRANCHES: "/admin/branches",
+    ADMIN_ROOMS: "/admin/rooms",
+    ADMIN_GUESTS: "/admin/guests",
+    ADMIN_STAFF: "/admin/staff",
+    ADMIN_BILLS: "/admin/bills",
+    ADMIN_ANALYTICS: "/admin/analytics",
+    ADMIN_NOTIFICATIONS: "/admin/notifications",
+    ADMIN_SETTINGS: "/admin/settings",
 }
 
 export default ROUTES;
