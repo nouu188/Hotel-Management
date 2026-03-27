@@ -2,7 +2,7 @@
 
 import { navLinks } from '@/constants/navLinks'
 import ROUTES from '@/constants/route'
-import { ChevronDown, LogOut, Phone } from 'lucide-react'
+import { ChevronDown, LogOut, Phone, ShieldCheck } from 'lucide-react'
 import React from 'react'
 import {
   Menubar,
@@ -66,14 +66,23 @@ const RightClientNavbar = () => {
                                     </MenubarTrigger>
 
                                     <MenubarContent align="center" style={{ width: "100px", minWidth: "unset" }} className="playfair z-300 flex flex-col justify-center text-md">
-                                        <MenubarItem 
-                                            className="flex whitespace-nowrap gap-3 hover:bg-transparent hover:text-[#BF882E] ease-in-out transition-all duration-300 cursor-pointer" 
+                                        <MenubarItem
+                                            className="flex whitespace-nowrap gap-3 hover:bg-transparent hover:text-[#BF882E] ease-in-out transition-all duration-300 cursor-pointer"
                                             onClick={() => router.push("/user")}
                                         >
                                             Dashboard
                                         </MenubarItem>
-                                        <MenubarItem 
-                                            className="flex whitespace-nowrap gap-3 hover:bg-transparent hover:text-[#BF882E] ease-in-out transition-all duration-300 cursor-pointer" 
+                                        {session?.user?.role === "ADMIN" && (
+                                            <MenubarItem
+                                                className="flex whitespace-nowrap gap-3 hover:bg-transparent hover:text-[#BF882E] ease-in-out transition-all duration-300 cursor-pointer"
+                                                onClick={() => router.push(ROUTES.ADMIN_OVERVIEW)}
+                                            >
+                                                Admin
+                                                <ShieldCheck className="w-4 h-4" />
+                                            </MenubarItem>
+                                        )}
+                                        <MenubarItem
+                                            className="flex whitespace-nowrap gap-3 hover:bg-transparent hover:text-[#BF882E] ease-in-out transition-all duration-300 cursor-pointer"
                                             onClick={handleSignOut}
                                         >
                                             Log Out

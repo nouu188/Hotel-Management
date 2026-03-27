@@ -8,7 +8,14 @@ import { RoomTypeFormDialog } from "./RoomTypeFormDialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, Plus } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Search, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 
 export function RoomTypeGrid() {
   const {
@@ -75,31 +82,66 @@ export function RoomTypeGrid() {
         </div>
       )}
 
-      {!loading && pagination.totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-slate-500">
-            {pagination.total} total — Page {pagination.page} of {pagination.totalPages}
-          </p>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPagination((p) => ({ ...p, page: p.page - 1 }))}
-              disabled={pagination.page <= 1}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPagination((p) => ({ ...p, page: p.page + 1 }))}
-              disabled={pagination.page >= pagination.totalPages}
-            >
-              Next
-            </Button>
-          </div>
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-sm text-slate-500">
+          <span>Rows per page</span>
+          <Select
+            value={String(pagination.limit)}
+            onValueChange={(value) =>
+              setPagination((p) => ({
+                ...p,
+                limit: Number(value),
+                page: 1,
+              }))
+            }
+          >
+            <SelectTrigger className="h-8 w-[70px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {[5, 12, 20, 50].map((size) => (
+                <SelectItem key={size} value={String(size)}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-      )}
+
+        <p className="text-sm text-slate-500">
+          {pagination.total > 0
+            ? `Showing ${(pagination.page - 1) * pagination.limit + 1}\u2013${Math.min(pagination.page * pagination.limit, pagination.total)} of ${pagination.total} room types`
+            : "No room types"}
+        </p>
+
+        <div className="flex items-center gap-1">
+          <span className="text-sm text-slate-500 mr-2">
+            Page {pagination.page} of {pagination.totalPages || 1}
+          </span>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() =>
+              setPagination((p) => ({ ...p, page: p.page - 1 }))
+            }
+            disabled={pagination.page <= 1}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() =>
+              setPagination((p) => ({ ...p, page: p.page + 1 }))
+            }
+            disabled={pagination.page >= pagination.totalPages}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
 
       <RoomTypeFormDialog
         open={formOpen}

@@ -10,7 +10,7 @@ export default function AdminBookingsPage() {
   const [view, setView] = useState<"table" | "calendar">("table");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 container">
       <AdminPageHeader title="Booking Management">
         <BookingViewToggle view={view} onViewChange={setView} />
       </AdminPageHeader>
