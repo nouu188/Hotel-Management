@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import {
   SortingState,
   getCoreRowModel,
@@ -9,8 +9,11 @@ import {
 } from "@tanstack/react-table";
 import { useAdminFetch } from "@/hooks/use-admin-fetch";
 import { DataTableShell } from "@/components/admin/shared/DataTableShell";
-import { Button } from "@/components/ui/button";
+import { AdminPageHeader } from "@/components/admin/shared/AdminPageHeader";
+import { AdminBill, getAdminBillColumns } from "./BillColumns";
+import { BillDetailSheet } from "./BillDetailSheet";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -18,18 +21,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PaymentSummaryCards } from "./PaymentSummaryCards";
-import { PaymentDashboardCharts } from "./PaymentDashboardCharts";
-import { PaymentDetailSheet } from "./PaymentDetailSheet";
-import { AdminPayment, getAdminPaymentColumns } from "./PaymentColumns";
-import { PaymentStatus } from "@prisma/client";
 import { Search, X } from "lucide-react";
 
-const paymentStatuses = Object.values(PaymentStatus);
+const BILL_STATUS_OPTIONS = [
+  { value: "UNPAID", label: "Unpaid" },
+  { value: "PAID", label: "Paid" },
+  { value: "PENDING", label: "Pending" },
+  { value: "CANCELLED", label: "Cancelled" },
+];
 
-export function PaymentTable() {
+export function BillTable() {
   const {
-    data: payments,
+    data: bills,
     loading,
     search,
     setSearch,
@@ -38,34 +41,24 @@ export function PaymentTable() {
     clearFilters,
     pagination,
     setPagination,
-    extra,
-  } = useAdminFetch<AdminPayment>({
-    endpoint: "/api/admin/payments",
-    dataKey: "payments",
-  });
-
-  const summary = (extra.summary as { totalRevenue: number; pendingAmount: number; refundedAmount: number }) ?? {
-    totalRevenue: 0,
-    pendingAmount: 0,
-    refundedAmount: 0,
-  };
+  } = useAdminFetch<AdminBill>({ endpoint: "/api/admin/bills", dataKey: "bills" });
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [selectedPayment, setSelectedPayment] = useState<AdminPayment | null>(null);
+  const [selectedBillId, setSelectedBillId] = useState<string | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const handleViewDetails = useCallback((payment: AdminPayment) => {
-    setSelectedPayment(payment);
+  const handleViewDetails = useCallback((bill: AdminBill) => {
+    setSelectedBillId(bill.id);
     setSheetOpen(true);
   }, []);
 
   const columns = useMemo(
-    () => getAdminPaymentColumns(handleViewDetails),
+    () => getAdminBillColumns(handleViewDetails),
     [handleViewDetails]
   );
 
   const table = useReactTable({
-    data: payments,
+    data: bills,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -77,33 +70,39 @@ export function PaymentTable() {
 
   return (
     <div className="space-y-6">
-      <PaymentDashboardCharts />
+      <AdminPageHeader title="Bills" description="View and manage hotel bills" />
 
-      <PaymentSummaryCards data={summary} />
-
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="relative flex-1 min-w-[200px] max-w-sm">
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1 min-w-50 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
-            placeholder="Search by booking ID or payment ID..."
+            placeholder="Search by bill ID or guest name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9"
           />
         </div>
-        <Select value={filters.status ?? ""} onValueChange={(v) => setFilter("status", v)}>
+
+        <Select
+          value={filters.status || ""}
+          onValueChange={(value) => setFilter("status", value)}
+        >
           <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="All statuses" />
+            <SelectValue placeholder="All Statuses" />
           </SelectTrigger>
           <SelectContent>
-            {paymentStatuses.map((s) => (
-              <SelectItem key={s} value={s}>{s}</SelectItem>
+            {BILL_STATUS_OPTIONS.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
+
         {hasFilters && (
           <Button variant="ghost" size="sm" onClick={clearFilters}>
-            <X className="mr-1 h-4 w-4" /> Clear
+            <X className="mr-1 h-4 w-4" />
+            Clear
           </Button>
         )}
       </div>
@@ -112,13 +111,13 @@ export function PaymentTable() {
         table={table}
         columns={columns}
         loading={loading}
-        emptyMessage="No payments found."
+        emptyMessage="No bills found."
         pagination={pagination}
         onPaginationChange={setPagination}
       />
 
-      <PaymentDetailSheet
-        payment={selectedPayment}
+      <BillDetailSheet
+        billId={selectedBillId}
         open={sheetOpen}
         onOpenChange={setSheetOpen}
       />

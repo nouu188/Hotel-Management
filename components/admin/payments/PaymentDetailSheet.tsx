@@ -55,7 +55,7 @@ export function PaymentDetailSheet({
           </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-6 space-y-6">
+        <div className="space-y-6 px-4">
           <section>
             <h3 className="text-sm font-semibold text-slate-700 mb-2">
               Payment Info

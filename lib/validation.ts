@@ -194,7 +194,7 @@ export const RoomTypeCreateSchema = z.object({
   bedNumb: z.number().int().min(1).optional(),
   bathNumb: z.number().int().min(1).optional(),
   price: z.number().int().min(0, "Price must be non-negative"),
-  image: z.array(z.string().url()).optional(),
+  image: z.array(z.string().min(1)).optional(),
 });
 
 export const RoomTypeUpdateSchema = RoomTypeCreateSchema.partial();
@@ -208,4 +208,8 @@ export const InventoryCreateSchema = z.object({
 export const InventoryUpdateSchema = z.object({
   quantity: z.number().int().min(0).optional(),
   status: z.enum(["AVAILABLE", "UNDER_MAINTENANCE", "BLOCKED"]).optional(),
+});
+
+export const BillUpdateSchema = z.object({
+  status: z.enum(["UNPAID", "PAID", "CANCELLED", "PENDING"]).optional(),
 });
