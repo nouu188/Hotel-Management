@@ -213,3 +213,17 @@ export const InventoryUpdateSchema = z.object({
 export const BillUpdateSchema = z.object({
   status: z.enum(["UNPAID", "PAID", "CANCELLED", "PENDING"]).optional(),
 });
+
+export const CreateStaffSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  staffRole: z.enum(["RECEPTIONIST", "RESERVATION", "CASHIER"]),
+  enrollDate: z.string().datetime({ offset: true }).or(z.string().date()),
+});
+
+export const UpdateStaffSchema = z.object({
+  name: z.string().min(2).optional(),
+  staffRole: z.enum(["RECEPTIONIST", "RESERVATION", "CASHIER"]).optional(),
+  status: z.enum(["ACTIVE", "ON_LEAVE", "TERMINATED"]).optional(),
+});

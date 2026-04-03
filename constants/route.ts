@@ -22,6 +22,12 @@ const ROUTES = {
     ADMIN_ANALYTICS: "/admin/analytics",
     ADMIN_NOTIFICATIONS: "/admin/notifications",
     ADMIN_SETTINGS: "/admin/settings",
+    RECEPTIONIST: "/receptionist",
+    RECEPTIONIST_OVERVIEW: "/receptionist/overview",
+    RECEPTIONIST_BOOKINGS: "/receptionist/bookings",
+    RECEPTIONIST_BILLS: "/receptionist/bills",
+    RECEPTIONIST_GUESTS: "/receptionist/guests",
+    RECEPTIONIST_ROOMS: "/receptionist/rooms",
 }
 
 export default ROUTES;

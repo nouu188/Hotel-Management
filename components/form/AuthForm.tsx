@@ -59,7 +59,13 @@ const AuthForm = <T extends FieldValues>({
           });
           const updatedSession = await update();
           const role = (updatedSession as any)?.user?.role;
-          router.push(role === "ADMIN" ? ROUTES.ADMIN : ROUTES.HOME);
+          router.push(
+            role === "ADMIN"
+              ? ROUTES.ADMIN
+              : role === "RECEPTIONIST"
+                ? ROUTES.RECEPTIONIST
+                : ROUTES.HOME
+          );
           router.refresh();
         } else {
           toast({

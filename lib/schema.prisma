@@ -26,6 +26,7 @@ model User {
   updatedAt DateTime  @updatedAt
   account   Account?
   booking   Booking[]
+  staff     Staff?
 }
 
 model Account {
@@ -167,6 +168,9 @@ model Staff {
   enrollDate DateTime
 
   status     StaffStatus @default(ACTIVE)
+
+  userId     String?   @unique
+  user       User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt

@@ -11,7 +11,8 @@
     "worker": "tsx watch --require dotenv/config scripts/run-worker.ts",
     "upload-assets": "tsx scripts/upload-assets.ts",
     "seed:all": "tsx scripts/seed-database.ts",
-    "create-admin": "tsx scripts/create-admin.ts"
+    "create-admin": "tsx scripts/create-admin.ts",
+    "create-receptionist": "tsx scripts/create-receptionist.ts"
   },
   "prisma": {
     "dev": "next dev",
