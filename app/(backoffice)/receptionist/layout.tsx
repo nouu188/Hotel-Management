@@ -8,7 +8,7 @@ export default async function ReceptionistLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // await requireReceptionist();
+  await requireReceptionist();
 
   return (
     <SidebarProvider>
