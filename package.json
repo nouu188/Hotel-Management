@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
     "worker": "tsx watch --require dotenv/config scripts/run-worker.ts",
     "upload-assets": "tsx scripts/upload-assets.ts",
     "seed:all": "tsx scripts/seed-database.ts",
